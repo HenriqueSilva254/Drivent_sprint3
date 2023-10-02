@@ -51,7 +51,14 @@ export function handleApplicationErrors(
   }
 
   if (err.name === 'EnrollmentNotFoundError') {
-    return res.sendStatus(httpStatus.BAD_REQUEST);
+    return res.status(httpStatus.NOT_FOUND).send({
+      message: err.message,
+    });
+  }
+  if (err.name === 'EnrollmentBadrequests') {
+    return res.status(httpStatus.BAD_REQUEST).send({
+      message: err.message,
+    });
   }
 
   if (err.name === 'InvalidCEPError') {
@@ -60,6 +67,24 @@ export function handleApplicationErrors(
 
   if (err.hasOwnProperty('status') && err.name === 'RequestError') {
     return res.status((err as RequestError).status).send({
+      message: err.message,
+    });
+  }
+
+  if (err.name === 'paymentRequired') {
+    return res.status(httpStatus.PAYMENT_REQUIRED).send({
+      message: err.message,
+    });
+  }
+
+  if (err.name === 'hotelNoinclude') {
+    return res.status(httpStatus.PAYMENT_REQUIRED).send({
+      message: err.message,
+    });
+  }
+
+  if (err.name === 'ticketRemote') {
+    return res.status(httpStatus.PAYMENT_REQUIRED).send({
       message: err.message,
     });
   }
